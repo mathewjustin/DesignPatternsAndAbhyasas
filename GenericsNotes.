@@ -1,0 +1,223 @@
+Genrics - Notes.
+
+ -------------
+ 
+ public abstrat class Enum<E extends Enum<E> implements Comparable <E> {
+ 
+ 
+ }
+ 
+ Compile time type checking
+ 
+ Reuse.
+ 
+ TypeRatior (Spell check)
+ 
+ The byte code of the genric will contain only raw type,it is called typerator(sc)
+ 
+ In case of Array it will remain.
+ 
+ 
+ SubTyping -
+ 
+ Number[] nums = new Integer[10]
+ 
+ ---Wll it compile ?
+ 
+ Integer is a subtype of number so it will compile.
+ 
+ List<Number> l =new ArrayList<Integer> ==> This will not compile. 
+ Because ArrayList of Integer is not a subtype of Number.
+ 
+ 
+ ---> To make it work. 
+  
+      List < ? extends Number > l =new ArrayList< Integer>()
+	  
+	  Now it has become a subtype so it works.
+	  
+	  
+-----------------------------------
+
+sum(Collection<Number> col {
+
+
+}
+
+List<Integer> ints;
+List<Double> double;
+List<Number> number ;
+
+
+ans : sum(Collection< ? extends Number> col){
+
+
+}
+
+----------------------------------------
+
+List<Integer> iList = Arrays.asList(1,2,3);
+
+List<? extends Number> nList = l;
+nList.add(4) X This wont compile..
+
+
+  - > add operation is not possible to a genric type. || Neeed to google.
+  
+  
+  
+-----------------------------------------
+
+
+Super ? 
+----
+
+Collection <? super Integer> c = new Arraylist<Integer > / A.l<number> / A.l<Object> 
+
+Just like extends / any type which is a super type of integer.
+
+
+sum(Collection<Integer> c)
+{
+
+}
+
+
+L<Integer>
+L<Number>
+L<Object> || To make it work you can use super , Again just like extends.
+
+
+----
+
+List<? super Integer> l - Arrays.asList(1,2,3)
+
+List< ? super Integer > nums = l;
+Integer l = nums.get(0)
+
+Will it compile? No. 
+
+------------
+
+
+Generic get and put rule.
+ 
+ super you canot get, if its extends you cannot put || Need to google more.
+ 
+----
+This needs more study..
+
+
+<T> copy (List<? super T> dst, List<? extends T> src) {
+
+
+}
+
+copy ( List<Integer>,List<Object>) 
+
+
+
+--------------------------------------------------------------------------------
+instead of wild cards we can use T.
+
+
+When it comes ot T you cant use super, it should be extends.
+
+Bounce.
+----------
+
+T extends Comparable<T>  method. The max T can go is until Comparable. It wont basically go until Object.
+
+
+
+
+Clss Enum < E extends Enum<E>) implements comparable<E> {
+
+}
+
+==> Country extends Enum<Country> implements comparable<Country> {
+
+}
+
+
+
+---------------------Examples.
+
+Class Tuple<T,U> {
+
+T first 
+
+U first
+Tuple (T first , U second){
+
+}
+
+}
+
+
+User {
+
+int id ;
+
+T value;
+
+static int count;
+
+
+User(T value){
+T = value
+count ++;
+}
+
+static int getCount(){
+
+return count;
+}
+}
+
+Now we can create any type of user class.
+
+If we want to get to get the total number of users regarless of type we can use the count variable. 
+
+
+---------------Erasure.. Rules
+
+1. All type parameter of a parameterized type will be dropped.
+
+     List<String>, List<Integer> , List<List>...etc
+	 
+	 All these will be represented by List. All the types will be dropped during compile time.
+	 
+	 
+2. All type variable will be replaced by erasure of its bound.
+
+    eg : T extends Comparable<T> => During compile time it will be replaced with the type The
+	if not it will replaced with Object.
+	
+	
+	
+3. In case of multiple bounds it will replace with replace with erasure of the left. below example it will replace with Object.
+	- Multiple bounds - 
+	
+	 <T extends Object & Comparable <T>> T
+----------------------------
+
+Edge cases of parameterized types..
+
+
+* if( o instanceOf List<Integer>)  ==> This is a compile time issue because Erasure will be replaced by compiler is List. So compiler doesnlt know the type.
+
+
+* ParameterizedException<T> extends Exception {
+
+}
+
+ - > we will use this class in catch block. So in rutime we don't have the type at compile time.
+ 
+--------------------------
+
+
+
+
+	  
+ 
