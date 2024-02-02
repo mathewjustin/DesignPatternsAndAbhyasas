@@ -1,3 +1,4 @@
+## These notes are handwritten from paid videos. Worth the read
 # DesignPatternsAndAbhyasas2023
 
 ## How https works and what is .cer certificate?
