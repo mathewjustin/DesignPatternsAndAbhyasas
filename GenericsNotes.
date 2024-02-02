@@ -1,223 +1,123 @@
-Genrics - Notes.
+# Java Generics - Simplified Notes
 
- -------------
- 
- public abstrat class Enum<E extends Enum<E> implements Comparable <E> {
- 
- 
- }
- 
- Compile time type checking
- 
- Reuse.
- 
- TypeRatior (Spell check)
- 
- The byte code of the genric will contain only raw type,it is called typerator(sc)
- 
- In case of Array it will remain.
- 
- 
- SubTyping -
- 
- Number[] nums = new Integer[10]
- 
- ---Wll it compile ?
- 
- Integer is a subtype of number so it will compile.
- 
- List<Number> l =new ArrayList<Integer> ==> This will not compile. 
- Because ArrayList of Integer is not a subtype of Number.
- 
- 
- ---> To make it work. 
+Generics in Java allow for parameterized types, enabling classes, interfaces, and methods to be used with different data types while ensuring compile-time type safety and reducing the need for type casts. Here's a simplified breakdown:
+
+### Basics of Generics
+
+- **Type Safety:** Generics enforce type safety by ensuring that you only insert and retrieve objects of a predefined type.
   
-      List < ? extends Number > l =new ArrayList< Integer>()
-	  
-	  Now it has become a subtype so it works.
-	  
-	  
------------------------------------
+- **Code Reuse:** With generics, you can write a method/class/interface once and use it for any type of object.
 
-sum(Collection<Number> col {
+- **Type Erasure:** Java implements generics through type erasure to maintain backward compatibility with older versions. This means the generic type information is not available at runtime; instead, all generic types are converted to their raw types.
 
+### Syntax Example:
 
+```java
+public abstract class Enum<E extends Enum<E>> implements Comparable<E> {
+    // Class body
 }
+```
 
-List<Integer> ints;
-List<Double> double;
-List<Number> number ;
+### Type Erasure Example:
 
+- **Type Erasure:** In the bytecode, the generic type `E` is replaced with its raw type, maintaining compatibility but losing specific type information at runtime.
 
-ans : sum(Collection< ? extends Number> col){
+### Subtyping and Generics:
 
-
-}
-
-----------------------------------------
-
-List<Integer> iList = Arrays.asList(1,2,3);
-
-List<? extends Number> nList = l;
-nList.add(4) X This wont compile..
-
-
-  - > add operation is not possible to a genric type. || Neeed to google.
+- **Arrays and Generics:** While you can assign an array of a subtype (e.g., `Integer[]`) to an array of its supertype (e.g., `Number[]`), this does not work with generic collections due to type safety.
   
+  ```java
+  Number[] nums = new Integer[10]; // Compiles because arrays are covariant
   
-  
------------------------------------------
+  List<Number> numbers = new ArrayList<Integer>(); // Does not compile because generics are invariant
+  ```
 
+- **Wildcard with extends:** To allow a collection of a subtype, use the `? extends` wildcard:
 
-Super ? 
-----
+  ```java
+  List<? extends Number> list = new ArrayList<Integer>(); // This works
+  ```
 
-Collection <? super Integer> c = new Arraylist<Integer > / A.l<number> / A.l<Object> 
+### Generics and Methods:
 
-Just like extends / any type which is a super type of integer.
+- **Restrictions with extends:** When you use `? extends T`, you cannot add to the collection because the exact type is unknown:
 
+  ```java
+  List<? extends Number> list = new ArrayList<Integer>();
+  list.add(4); // Compile-time error
+  ```
 
-sum(Collection<Integer> c)
-{
+- **Using super:** If you need to insert into a collection, use `? super T`. This allows the collection to accept the type and its supertypes:
 
-}
+  ```java
+  List<? super Integer> list = new ArrayList<Integer>();
+  list.add(4); // This works
+  ```
 
+### Generic Methods:
 
-L<Integer>
-L<Number>
-L<Object> || To make it work you can use super , Again just like extends.
+- **Get and Put Principle:** Generally, use `? extends T` when you only want to get items from a collection, and `? super T` when you want to put items into a collection.
 
+- **Example:**
 
-----
+  ```java
+  public <T> void copy(List<? super T> dest, List<? extends T> src) {
+      // Method body
+  }
+  ```
 
-List<? super Integer> l - Arrays.asList(1,2,3)
+### Type Parameters:
 
-List< ? super Integer > nums = l;
-Integer l = nums.get(0)
+- **Using T:** When defining generic types, you can use `T` to represent an unknown type. However, you cannot use `super` with `T`; only `extends` is allowed.
 
-Will it compile? No. 
+- **Bounds:** `T` can be bounded to a particular type using `extends`. This restricts `T` to being an instance of the specified type or its subclasses.
 
-------------
+### Advanced Concepts:
 
+- **Erasure Rules:**
+  1. All type parameters are removed during compilation.
+  2. Type variables are replaced by their bounds, or `Object` if unbounded.
+  3. In multiple bounds, the erasure is the erasure of the leftmost bound.
 
-Generic get and put rule.
- 
- super you canot get, if its extends you cannot put || Need to google more.
- 
-----
-This needs more study..
+- **Edge Cases:**
+  - Using `instanceof` with parameterized types is not allowed because of type erasure.
+  - Parameterized types cannot be used in catch blocks for the same reason.
 
+### Examples:
 
-<T> copy (List<? super T> dst, List<? extends T> src) {
+- **Tuple Class:**
 
+  ```java
+  public class Tuple<T, U> {
+      T first;
+      U second;
 
-}
+      public Tuple(T first, U second) {
+          this.first = first;
+          this.second = second;
+      }
+  }
+  ```
 
-copy ( List<Integer>,List<Object>) 
+- **User Class with Generics:**
 
+  ```java
+  public class User<T> {
+      int id;
+      T value;
+      static int count;
 
+      public User(T value) {
+          this.value = value;
+          count++;
+      }
 
---------------------------------------------------------------------------------
-instead of wild cards we can use T.
+      public static int getCount() {
+          return count;
+      }
+  }
+  ```
 
+### Conclusion
 
-When it comes ot T you cant use super, it should be extends.
-
-Bounce.
-----------
-
-T extends Comparable<T>  method. The max T can go is until Comparable. It wont basically go until Object.
-
-
-
-
-Clss Enum < E extends Enum<E>) implements comparable<E> {
-
-}
-
-==> Country extends Enum<Country> implements comparable<Country> {
-
-}
-
-
-
----------------------Examples.
-
-Class Tuple<T,U> {
-
-T first 
-
-U first
-Tuple (T first , U second){
-
-}
-
-}
-
-
-User {
-
-int id ;
-
-T value;
-
-static int count;
-
-
-User(T value){
-T = value
-count ++;
-}
-
-static int getCount(){
-
-return count;
-}
-}
-
-Now we can create any type of user class.
-
-If we want to get to get the total number of users regarless of type we can use the count variable. 
-
-
----------------Erasure.. Rules
-
-1. All type parameter of a parameterized type will be dropped.
-
-     List<String>, List<Integer> , List<List>...etc
-	 
-	 All these will be represented by List. All the types will be dropped during compile time.
-	 
-	 
-2. All type variable will be replaced by erasure of its bound.
-
-    eg : T extends Comparable<T> => During compile time it will be replaced with the type The
-	if not it will replaced with Object.
-	
-	
-	
-3. In case of multiple bounds it will replace with replace with erasure of the left. below example it will replace with Object.
-	- Multiple bounds - 
-	
-	 <T extends Object & Comparable <T>> T
-----------------------------
-
-Edge cases of parameterized types..
-
-
-* if( o instanceOf List<Integer>)  ==> This is a compile time issue because Erasure will be replaced by compiler is List. So compiler doesnlt know the type.
-
-
-* ParameterizedException<T> extends Exception {
-
-}
-
- - > we will use this class in catch block. So in rutime we don't have the type at compile time.
- 
---------------------------
-
-
-
-
-	  
- 
+Generics enhance Java's type system by allowing more flexible and safer code. Understanding their usage, limitations, and workarounds like wildcards, type erasure, and bounds is key to leveraging their full potential.
