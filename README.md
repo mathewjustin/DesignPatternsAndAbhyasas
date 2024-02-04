@@ -1,4 +1,4 @@
-## These notes are handwritten from paid videos. Worth the read
+## These notes have been meticulously transcribed from premium video content and YouTube sources. There's no need for you to invest your resources in YouTube or other platforms—I've taken care of that for you.
 # DesignPatternsAndAbhyasas2023
 
 ## How https works and what is .cer certificate?
