@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant Client as C
+participant "ConfigurationManager" as CM
+
+C -> CM: getInstance()
+note right of CM: Check if instance exists
+
+alt instance does not exist
+    CM -> CM: Create instance
+    CM -> CM: readConfigurationFile()
+    note right of CM: Load config file once
+    CM --> C: Return instance
+else instance exists
+    CM --> C: Return existing instance
+end
+
+C -> CM: getConfigValue("key")
+CM --> C: Return value for "key"
+
+@enduml
