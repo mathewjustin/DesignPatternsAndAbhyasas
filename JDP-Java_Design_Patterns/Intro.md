@@ -53,3 +53,49 @@ Different flavours from JDK.
 Runtime.getRuntime();
 Desktop.getDesktop();
 
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ConfigurationManager {
+    // The static variable that stores the singleton instance
+    private static ConfigurationManager instance = null;
+    
+    // A map to store the key-value pairs from the configuration file
+    private Map<String, String> configData;
+    
+    // Private constructor to prevent instantiation from outside the class
+    private ConfigurationManager() {
+        configData = new HashMap<>();
+        readConfigurationFile();
+    }
+    
+    // Public method to return the singleton instance
+    public static synchronized ConfigurationManager getInstance() {
+        if (instance == null) {
+            instance = new ConfigurationManager();
+        }
+        return instance;
+    }
+    
+    // Simulates reading the configuration file and storing its contents
+    private void readConfigurationFile() {
+        // Simulated configuration data
+        configData.put("key", "value");
+        // Add actual file reading logic here
+    }
+    
+    // Public method to get a configuration value by key
+    public String getConfigValue(String key) {
+        return configData.getOrDefault(key, "Key not found");
+    }
+    
+    // Example usage
+    public static void main(String[] args) {
+        ConfigurationManager configManager = ConfigurationManager.getInstance();
+        String value = configManager.getConfigValue("key");
+        System.out.println("The value for 'key' is: " + value);
+    }
+}
+```
+
